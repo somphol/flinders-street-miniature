@@ -64,20 +64,28 @@ export function buildEnvironment(): { group: THREE.Group; water: THREE.Mesh; gro
   group.add(water)
 
   // road surfaces
-  const asphalt = new THREE.MeshLambertMaterial({ color: 0x8d8b84 })
+  // decals sit millimetres above the slab: polygon offset stops them z-fighting
+  const decal = (color: number) =>
+    new THREE.MeshLambertMaterial({
+      color,
+      polygonOffset: true,
+      polygonOffsetFactor: -2,
+      polygonOffsetUnits: -4,
+    })
+  const asphalt = decal(0x8d8b84)
   for (const r of roads()) {
     const m = new THREE.Mesh(new THREE.PlaneGeometry(r.u1 - r.u0, r.v1 - r.v0), asphalt)
     m.rotation.x = -Math.PI / 2
-    m.position.set((r.u0 + r.u1) / 2, 0.07, (r.v0 + r.v1) / 2)
+    m.position.set((r.u0 + r.u1) / 2, 0.16, (r.v0 + r.v1) / 2)
     m.receiveShadow = true
     group.add(m)
     if (r.name === 'Flinders' || r.name === 'Swanston') {
       const lane = new THREE.Mesh(
         new THREE.PlaneGeometry(r.ew ? r.u1 - r.u0 : 0.5, r.ew ? 0.5 : r.v1 - r.v0),
-        new THREE.MeshLambertMaterial({ color: 0xf2ead4 })
+        decal(0xf2ead4)
       )
       lane.rotation.x = -Math.PI / 2
-      lane.position.set((r.u0 + r.u1) / 2, 0.09, (r.v0 + r.v1) / 2)
+      lane.position.set((r.u0 + r.u1) / 2, 0.24, (r.v0 + r.v1) / 2)
       group.add(lane)
     }
   }
@@ -105,10 +113,10 @@ export function buildEnvironment(): { group: THREE.Group; water: THREE.Mesh; gro
   for (const [w, d, u, v] of [[170, 170, 155, -267], [214, 170, 343, 177]] as const) {
     const park = new THREE.Mesh(
       new THREE.PlaneGeometry(w, d),
-      new THREE.MeshLambertMaterial({ color: 0x9dbf86 })
+      decal(0x9dbf86)
     )
     park.rotation.x = -Math.PI / 2
-    park.position.set(u, 0.12, v)
+    park.position.set(u, 0.2, v)
     park.receiveShadow = true
     group.add(park)
   }

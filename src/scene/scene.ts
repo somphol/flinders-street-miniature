@@ -12,6 +12,7 @@ export interface Mini {
   setNight: (v: number) => void
   reset: () => void
   zoom: (factor: number) => void
+  top: () => void
   azimuth: () => number
   state: () => { night: number; landmark: LandmarkId | null; fps: number }
   dispose: () => void
@@ -48,7 +49,8 @@ export function createMini(canvas: HTMLCanvasElement): Mini {
     scene.background = tex
   }
 
-  const camera = new THREE.PerspectiveCamera(38, 1, 1, 2600)
+  // near/far ratio drives depth precision: 1 m was starving it across a 900 m tray
+  const camera = new THREE.PerspectiveCamera(38, 1, 24, 2200)
 
   const cityGroup = new THREE.Group()
   cityGroup.rotation.y = GRID_ANGLE
@@ -112,6 +114,13 @@ export function createMini(canvas: HTMLCanvasElement): Mini {
 
   const setNight = (v: number) => {
     night = THREE.MathUtils.clamp(v, 0, 1)
+  }
+
+  const top = () => {
+    const t = localToWorld(0, 20, 0)
+    camera.position.copy(t).add(new THREE.Vector3(0, 900, 0.001))
+    controls.target.copy(t)
+    controls.update()
   }
 
   const zoom = (factor: number) => {
@@ -189,6 +198,7 @@ export function createMini(canvas: HTMLCanvasElement): Mini {
     focus,
     setNight,
     reset,
+    top,
     zoom,
     azimuth,
     state: () => ({ night, landmark: active, fps: Math.round(fps) }),
