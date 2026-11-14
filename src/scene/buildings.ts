@@ -12,6 +12,8 @@ interface FamilySpec {
 }
 
 const AWNING_COLOURS = [0x7a4a3c, 0x3f5f57, 0xc0603f, 0x2f4858, 0xb08a4a]
+// Melbourne shopfront register: deep green, burgundy, navy, mustard, oxblood
+const SHOP_COLOURS = [0x2f4a3f, 0x6b2f33, 0x24384c, 0xa8842c, 0x5d3130, 0x3a4a3a]
 const kAwn = (r: number) => AWNING_COLOURS[Math.floor(r * AWNING_COLOURS.length)]
 
 const FAMILIES: Record<string, FamilySpec> = {
@@ -35,6 +37,8 @@ export function buildCity(parcelList: Parcel[], seed = 11): THREE.Group {
   const plant: Instance[] = []
   const balconies: Instance[] = []
   const awnings: Instance[] = []
+  const shops: Instance[] = []
+  const tanks: Instance[] = []
 
 
   for (const p of parcelList) {
@@ -67,6 +71,13 @@ export function buildCity(parcelList: Parcel[], seed = 11): THREE.Group {
     if (familyName === 'shophouse' || familyName === 'terrace') {
       awnings.push({ u: mu, v: mv + dep * 0.5 + 1.1, w: w * 0.86, d: 2.2, h: 0.3,
                     y: 4.2, color: kAwn(rand()) })
+      // painted ground floor, the thing that gives a terrace street its colour
+      shops.push({ u: mu, v: mv + dep * 0.5 + 0.08, w: w * 0.98, d: 0.16, h: 3.9,
+                   y: 0.0, color: SHOP_COLOURS[Math.floor(rand() * SHOP_COLOURS.length)] })
+    }
+    if (h > 14 && rand() < 0.3) {
+      tanks.push({ u: mu + (rand() - 0.5) * w * 0.5, v: mv + (rand() - 0.5) * dep * 0.5,
+                   w: 2.6, d: 2.6, h: 3.2, y: h + 0.7, color: 0x6c6a63 })
     }
     const roofTint = rand() < 0.25 ? 0x9aa3a6 : spec.roof
     roofs.push({ u: mu, v: mv, w: w * 1.03, d: dep * 1.03, h: 0.7, y: h, color: roofTint })
@@ -96,6 +107,8 @@ export function buildCity(parcelList: Parcel[], seed = 11): THREE.Group {
   group.add(instanced(box, roofMat, roofs, 'roofs'))
   group.add(instanced(box, new THREE.MeshLambertMaterial({ color: 0xffffff }), balconies, 'balconies'))
   group.add(instanced(box, new THREE.MeshLambertMaterial({ color: 0xffffff }), awnings, 'awnings'))
+  group.add(instanced(box, new THREE.MeshLambertMaterial({ color: 0xffffff }), shops, 'shopfronts'))
+  group.add(instanced(new THREE.CylinderGeometry(0.5, 0.5, 1, 8), new THREE.MeshLambertMaterial({ color: 0xffffff }), tanks, 'tanks'))
   group.add(instanced(new THREE.ConeGeometry(0.72, 1, 4), roofMat, hips, 'hips'))
   group.add(instanced(box, roofMat, plant, 'plant'))
   return group
