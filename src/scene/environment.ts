@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js'
 import { PALETTE, TRAY } from './constants'
 import { riverNorthEdge, riverSouthEdge } from './geography'
 import { instanced, rng, type Instance } from './kit'
@@ -9,14 +10,33 @@ export function buildEnvironment(): { group: THREE.Group; water: THREE.Mesh; gro
   group.name = 'environment'
   const rand = rng(3)
 
-  // land slab
+  // land slab: a rounded collectible base with a soft contact shadow
   const ground = new THREE.Mesh(
-    new THREE.BoxGeometry(TRAY.w, 4, TRAY.d),
+    new RoundedBoxGeometry(TRAY.w, 10, TRAY.d, 5, 8),
     new THREE.MeshLambertMaterial({ color: PALETTE.day.land })
   )
-  ground.position.y = -2
+  ground.position.y = -5
   ground.receiveShadow = true
+  ground.castShadow = true
   group.add(ground)
+
+  const shadowCanvas = document.createElement('canvas')
+  shadowCanvas.width = shadowCanvas.height = 256
+  const sg = shadowCanvas.getContext('2d')!
+  const grd = sg.createRadialGradient(128, 128, 20, 128, 128, 126)
+  grd.addColorStop(0, 'rgba(90,82,70,0.55)')
+  grd.addColorStop(0.55, 'rgba(90,82,70,0.28)')
+  grd.addColorStop(1, 'rgba(90,82,70,0)')
+  sg.fillStyle = grd
+  sg.fillRect(0, 0, 256, 256)
+  const shadowTex = new THREE.CanvasTexture(shadowCanvas)
+  const contact = new THREE.Mesh(
+    new THREE.PlaneGeometry(TRAY.w * 1.5, TRAY.d * 1.6),
+    new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false, opacity: 0.9 })
+  )
+  contact.rotation.x = -Math.PI / 2
+  contact.position.y = -10.4
+  group.add(contact)
 
   // water band, a bowed strip following the Yarra
   const u0 = -TRAY.w / 2, u1 = TRAY.w / 2

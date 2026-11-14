@@ -15,13 +15,20 @@ npm test           # plan and geometry invariants, no browser
 npm run build      # dist/
 ```
 
+## Design register
+
+High-key pastel: cream sky, teal water, terracotta roofs, soft ambient light with a low-contrast
+sun. The tray is a rounded slab with a contact-shadow plane, framed as a collectible rather than
+a street view. UI is editorial: serif headline with a gold italic line, numbered landmark cards,
+zoom rail, compass, EN/中文.
+
 ## What's in the tray
 
 - **Geography**: the Yarra as a bowed band, both banks, quay walls, three bridges.
 - **Plan**: Hoddle Grid rotated 19°, Flinders/Swanston spine, blocks cut from the street lines,
   332 parcels, reserved landmark lots.
 - **Buildings**: six districts, five families, one instanced mesh per family with a canvas
-  window texture, per-instance colour.
+  window texture, per-instance colour, plus hip roofs and rooftop plant for variety.
 - **Landmarks**: station with dome, clock tower and nine clocks; St Paul's; Federation Square;
   Eureka; Arts Centre spire; Young & Jackson; Forum; Princes Bridge.
 - **Life**: trams on Flinders and Swanston, river boats, pedestrians, street trees, tram stops.

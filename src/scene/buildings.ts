@@ -53,6 +53,18 @@ export function buildCity(parcelList: Parcel[], seed = 11): THREE.Group {
     roofs.push({ u: mu, v: mv, w: w * 1.03, d: dep * 1.03, h: 0.7, y: h, color: roofTint })
   }
 
+  const hips: Instance[] = []
+  const plant: Instance[] = []
+  for (const r of roofs) {
+    const pitched = r.color === 0xb4644a || r.color === 0xc07a52
+    if (pitched && rand() < 0.45) {
+      hips.push({ u: r.u, v: r.v, w: r.w * 0.98, d: r.d * 0.98, h: 1.7, y: r.y ?? 0, color: r.color })
+    } else if (rand() < 0.35) {
+      plant.push({ u: r.u + (rand() - 0.5) * r.w * 0.4, v: r.v + (rand() - 0.5) * r.d * 0.4,
+                   w: r.w * 0.3, d: r.d * 0.3, h: 2.2, y: (r.y ?? 0) + 0.7, color: 0xb9bdb9 })
+    }
+  }
+
   const box = new THREE.BoxGeometry(1, 1, 1)
   for (const [family, items] of buckets) {
     const spec = FAMILIES[family] ?? FAMILIES.terrace
@@ -65,5 +77,7 @@ export function buildCity(parcelList: Parcel[], seed = 11): THREE.Group {
 
   const roofMat = new THREE.MeshLambertMaterial({ color: 0xffffff })
   group.add(instanced(box, roofMat, roofs, 'roofs'))
+  group.add(instanced(new THREE.ConeGeometry(0.72, 1, 4), roofMat, hips, 'hips'))
+  group.add(instanced(box, roofMat, plant, 'plant'))
   return group
 }

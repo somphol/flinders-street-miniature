@@ -11,6 +11,8 @@ export interface Mini {
   focus: (id: LandmarkId) => void
   setNight: (v: number) => void
   reset: () => void
+  zoom: (factor: number) => void
+  azimuth: () => number
   state: () => { night: number; landmark: LandmarkId | null; fps: number }
   dispose: () => void
 }
@@ -31,6 +33,20 @@ export function createMini(canvas: HTMLCanvasElement): Mini {
 
   const scene = new THREE.Scene()
   scene.fog = new THREE.Fog(PALETTE.day.fog, 700, 1900)
+
+  {
+    const c = document.createElement('canvas')
+    c.width = 2; c.height = 256
+    const g = c.getContext('2d')!
+    const grad = g.createLinearGradient(0, 0, 0, 256)
+    grad.addColorStop(0, '#f7f1e4')
+    grad.addColorStop(0.55, '#efe7d8')
+    grad.addColorStop(1, '#e6dccb')
+    g.fillStyle = grad; g.fillRect(0, 0, 2, 256)
+    const tex = new THREE.CanvasTexture(c)
+    tex.colorSpace = THREE.SRGBColorSpace
+    scene.background = tex
+  }
 
   const camera = new THREE.PerspectiveCamera(38, 1, 1, 2600)
 
@@ -69,8 +85,8 @@ export function createMini(canvas: HTMLCanvasElement): Mini {
   controls.maxPolarAngle = Math.PI * 0.48
 
   const overview = () => {
-    const target = localToWorld(10, 56, 0)
-    camera.position.copy(localToWorld(-270, -430, 470))
+    const target = localToWorld(0, 6, 0)
+    camera.position.copy(localToWorld(-430, -660, 730))
     controls.target.copy(target)
     controls.update()
   }
@@ -96,6 +112,18 @@ export function createMini(canvas: HTMLCanvasElement): Mini {
 
   const setNight = (v: number) => {
     night = THREE.MathUtils.clamp(v, 0, 1)
+  }
+
+  const zoom = (factor: number) => {
+    const dir = camera.position.clone().sub(controls.target)
+    const len = THREE.MathUtils.clamp(dir.length() * factor, 90, 1400)
+    camera.position.copy(controls.target).add(dir.setLength(len))
+    controls.update()
+  }
+
+  const azimuth = () => {
+    const d = camera.position.clone().sub(controls.target)
+    return (Math.atan2(d.x, d.z) * 180) / Math.PI
   }
 
   const resize = () => {
@@ -159,6 +187,8 @@ export function createMini(canvas: HTMLCanvasElement): Mini {
     focus,
     setNight,
     reset,
+    zoom,
+    azimuth,
     state: () => ({ night, landmark: active, fps: Math.round(fps) }),
     dispose: () => {
       cancelAnimationFrame(raf)

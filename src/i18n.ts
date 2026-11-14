@@ -3,7 +3,10 @@ export type Locale = 'en' | 'zh-CN'
 export const COPY = {
   en: {
     title: 'Flinders Street',
-    tagline: 'Melbourne, in one tray.',
+    titleAccent: 'in one tray.',
+    lede: 'Eight landmarks, one river bend, four bridges.',
+    footer: 'A DIGITAL COLLECTIBLE · VOL. 001',
+    tagline: 'The corner where the city introduces itself.',
     eyebrow: '37.8183° S · 144.9671° E',
     day: 'Day',
     night: 'Night',
@@ -16,7 +19,10 @@ export const COPY = {
   },
   'zh-CN': {
     title: '弗林德斯街',
-    tagline: '一盘中见墨尔本。',
+    titleAccent: '一盘中见墨尔本。',
+    lede: '八个地标，一道河湾，四座桥。',
+    footer: '数字收藏 · 第一卷',
+    tagline: '这座城市自我介绍的那个街角。',
     eyebrow: '南纬 37.8183° · 东经 144.9671°',
     day: '日',
     night: '夜',
