@@ -25,7 +25,7 @@ export function createMini(canvas: HTMLCanvasElement): Mini {
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
   renderer.outputColorSpace = THREE.SRGBColorSpace
   renderer.toneMapping = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.1
+  renderer.toneMappingExposure = 1.25
   renderer.shadowMap.enabled = true
   renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
@@ -45,16 +45,17 @@ export function createMini(canvas: HTMLCanvasElement): Mini {
   const traffic = buildTraffic()
   cityGroup.add(traffic.group)
 
-  const hemi = new THREE.HemisphereLight(0xcfe0f0, 0x6a6155, 1.1)
+  const hemi = new THREE.HemisphereLight(0xfff4e2, 0xcfc3ad, 1.5)
   scene.add(hemi)
 
-  const sun = new THREE.DirectionalLight(0xfff0d6, 2.6)
+  const sun = new THREE.DirectionalLight(0xfff6e6, 1.7)
   sun.position.set(180, 320, -240)
   sun.castShadow = true
   sun.shadow.mapSize.set(2048, 2048)
   const sc = sun.shadow.camera as THREE.OrthographicCamera
   sc.left = -420; sc.right = 420; sc.top = 340; sc.bottom = -340
   sc.near = 20; sc.far = 1200
+  sun.shadow.radius = 2.5
   sun.shadow.bias = -0.0008
   sun.shadow.normalBias = 0.8
   scene.add(sun)
@@ -116,8 +117,8 @@ export function createMini(canvas: HTMLCanvasElement): Mini {
     const sky = new THREE.Color(PALETTE.day.sky).lerp(new THREE.Color(PALETTE.night.sky), night)
     scene.background = sky
     scene.fog!.color.lerpColors(new THREE.Color(PALETTE.day.fog), new THREE.Color(PALETTE.night.fog), night)
-    sun.intensity = THREE.MathUtils.lerp(2.6, 0.35, night)
-    hemi.intensity = THREE.MathUtils.lerp(1.1, 0.35, night)
+    sun.intensity = THREE.MathUtils.lerp(1.7, 0.3, night)
+    hemi.intensity = THREE.MathUtils.lerp(1.5, 0.3, night)
     hemi.color.lerpColors(new THREE.Color(0xcfe0f0), new THREE.Color(0x1b2a3a), night)
     const water = env.water.material as THREE.MeshPhongMaterial
     water.color.lerpColors(new THREE.Color(PALETTE.day.water), new THREE.Color(PALETTE.night.water), night)

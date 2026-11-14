@@ -66,7 +66,7 @@ export function facadeTexture(kind: 'office' | 'terrace' | 'warehouse' | 'shopho
     for (let j = 0; j < rows; j++) {
       const x = mx + i * (cw + mx)
       const y = my + j * (ch + my)
-      g.fillStyle = j === 0 ? '#d9d2c4' : '#3a4750'
+      g.fillStyle = j === 0 ? '#d9d2c4' : '#7d99a5'
       g.fillRect(x, y, cw, ch)
       if (kind === 'terrace' || kind === 'shophouse') {
         g.fillStyle = '#f2ece0'

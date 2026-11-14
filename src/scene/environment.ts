@@ -44,7 +44,7 @@ export function buildEnvironment(): { group: THREE.Group; water: THREE.Mesh; gro
   group.add(water)
 
   // road surfaces
-  const asphalt = new THREE.MeshLambertMaterial({ color: 0x2f3236 })
+  const asphalt = new THREE.MeshLambertMaterial({ color: 0x8d8b84 })
   for (const r of roads()) {
     const m = new THREE.Mesh(new THREE.PlaneGeometry(r.u1 - r.u0, r.v1 - r.v0), asphalt)
     m.rotation.x = -Math.PI / 2
@@ -54,7 +54,7 @@ export function buildEnvironment(): { group: THREE.Group; water: THREE.Mesh; gro
     if (r.name === 'Flinders' || r.name === 'Swanston') {
       const lane = new THREE.Mesh(
         new THREE.PlaneGeometry(r.ew ? r.u1 - r.u0 : 0.5, r.ew ? 0.5 : r.v1 - r.v0),
-        new THREE.MeshLambertMaterial({ color: 0xb8a46a })
+        new THREE.MeshLambertMaterial({ color: 0xf2ead4 })
       )
       lane.rotation.x = -Math.PI / 2
       lane.position.set((r.u0 + r.u1) / 2, 0.09, (r.v0 + r.v1) / 2)
@@ -72,7 +72,7 @@ export function buildEnvironment(): { group: THREE.Group; water: THREE.Mesh; gro
       const len = Math.hypot(ub - ua, vb - va)
       const wall = new THREE.Mesh(
         new THREE.BoxGeometry(len, 2.4, 2),
-        new THREE.MeshLambertMaterial({ color: 0x6a6f6b })
+        new THREE.MeshLambertMaterial({ color: 0xd8d2c2 })
       )
       wall.position.set((ua + ub) / 2, 0.4, (va + vb) / 2)
       wall.rotation.y = Math.atan2(vb - va, ub - ua)
@@ -88,7 +88,7 @@ export function buildEnvironment(): { group: THREE.Group; water: THREE.Mesh; gro
     for (const v of [-14, 118]) {
       if (rand() < 0.2) continue
       trunks.push({ u, v, w: 1.1, d: 1.1, h: 4 })
-      crowns.push({ u, v, w: 6, d: 6, h: 7, y: 4, color: 0x4c6b4a })
+      crowns.push({ u, v, w: 6, d: 6, h: 7, y: 4, color: 0x86b06a })
     }
   }
   group.add(instanced(new THREE.CylinderGeometry(0.5, 0.7, 1, 6), new THREE.MeshLambertMaterial({ color: 0x5a4634 }), trunks, 'trunks'))

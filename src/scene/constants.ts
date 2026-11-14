@@ -9,7 +9,7 @@ export const NORTH = -1 // -z is north
 export const RIVER = { north: 46, south: 108, width: 62 }
 
 export const PALETTE = {
-  day: { sky: 0x9fc0d8, fog: 0xcfd8dc, sun: 0xfff0d6, water: 0x2c4247, land: 0x6d655a },
+  day: { sky: 0xefe7d8, fog: 0xefe7d8, sun: 0xfff6e6, water: 0x5aa39b, land: 0xe7dfcc },
   night: { sky: 0x0b1220, fog: 0x0d141d, water: 0x0e1518, land: 0x1a1c1d },
   copper: 0x4e8f7d,
   ochre: 0xc9b08a,

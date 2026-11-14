@@ -1,7 +1,7 @@
 :root {
   font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
-  color: #efe9dd;
-  background: #0d1216;
+  color: #22302f;
+  background: #efe7d8;
   font-synthesis: none;
 }
 * { box-sizing: border-box; }
@@ -10,30 +10,30 @@ html, body, #root { margin: 0; height: 100%; overflow: hidden; }
 
 .hud {
   position: fixed; top: 22px; left: 24px; pointer-events: none; max-width: 46ch;
-  text-shadow: 0 1px 14px rgba(0,0,0,.55);
+  text-shadow: 0 1px 18px rgba(255,255,255,.5);
 }
 .eyebrow {
   margin: 0 0 6px; font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
-  color: #c9a227; font-weight: 700;
+  color: #a8841c; font-weight: 700;
 }
 .hud h1 {
   margin: 0; font-family: "Iowan Old Style", Palatino, Georgia, serif;
   font-size: clamp(28px, 4.4vw, 46px); font-weight: 400; letter-spacing: -.01em; line-height: 1;
 }
-.tagline { margin: 8px 0 0; font-size: 13px; color: #cfd6d9; letter-spacing: .01em; }
+.tagline { margin: 8px 0 0; font-size: 13px; color: #5d6b68; letter-spacing: .01em; }
 
 .controls {
   position: fixed; top: 20px; right: 22px; display: flex; gap: 8px;
 }
 .controls button, .bar button {
   appearance: none; border: 1px solid rgba(239,233,221,.22);
-  background: rgba(13,18,22,.66); color: #efe9dd; border-radius: 999px;
+  background: rgba(255,255,255,.72); color: #22302f; border-radius: 999px;
   padding: 8px 14px; font: inherit; font-size: 11px; letter-spacing: .08em;
   text-transform: uppercase; cursor: pointer; backdrop-filter: blur(10px);
   transition: border-color .15s, background .15s, color .15s;
 }
-.controls button:hover, .bar button:hover { border-color: rgba(201,162,39,.8); }
-.controls button.on, .bar button.on { background: #c9a227; color: #14181c; border-color: #c9a227; }
+.controls button:hover, .bar button:hover { border-color: rgba(168,132,28,.75); }
+.controls button.on, .bar button.on { background: #c9a227; color: #fffdf6; border-color: #c9a227; }
 
 .bar {
   position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%);
@@ -42,7 +42,7 @@ html, body, #root { margin: 0; height: 100%; overflow: hidden; }
 }
 .hint {
   position: fixed; right: 22px; bottom: 24px; margin: 0; font-size: 10px;
-  letter-spacing: .1em; color: rgba(239,233,221,.5); text-transform: uppercase;
+  letter-spacing: .1em; color: rgba(34,48,47,.45); text-transform: uppercase;
 }
 
 @media (max-width: 760px) {

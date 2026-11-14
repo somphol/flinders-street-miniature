@@ -12,13 +12,13 @@ interface FamilySpec {
 }
 
 const FAMILIES: Record<string, FamilySpec> = {
-  terrace: { kind: 'terrace', color: 0xd8cbb2, roof: 0x6b4a3a, hMul: 1 },
-  institution: { kind: 'terrace', color: 0xcfc2a8, roof: 0x5a5f63, hMul: 1.3 },
-  office: { kind: 'office', color: 0xb9bcc0, roof: 0x5c6167, hMul: 1 },
-  glass: { kind: 'office', color: 0x8fa4b4, roof: 0x7d8b96, hMul: 1.15 },
-  shophouse: { kind: 'shophouse', color: 0xc79a72, roof: 0x6a4a3c, hMul: 1 },
-  warehouse: { kind: 'warehouse', color: 0x8d9298, roof: 0x4a5259, hMul: 1 },
-  slab: { kind: 'office', color: 0xc3c8c9, roof: 0x8b9296, hMul: 1 },
+  terrace: { kind: 'terrace', color: 0xefe3cd, roof: 0xb4644a, hMul: 1 },
+  institution: { kind: 'terrace', color: 0xe6dcc6, roof: 0x9aa3a6, hMul: 1.3 },
+  office: { kind: 'office', color: 0xdfe0dc, roof: 0xb9bdbd, hMul: 1 },
+  glass: { kind: 'office', color: 0xa9c4cf, roof: 0x8fb2bf, hMul: 1.15 },
+  shophouse: { kind: 'shophouse', color: 0xe3b58c, roof: 0xc07a52, hMul: 1 },
+  warehouse: { kind: 'warehouse', color: 0xcfd4d4, roof: 0x9aa3a8, hMul: 1 },
+  slab: { kind: 'office', color: 0xe9e4d6, roof: 0xc2c7c4, hMul: 1 },
 }
 
 export function buildCity(parcelList: Parcel[], seed = 11): THREE.Group {
@@ -49,7 +49,8 @@ export function buildCity(parcelList: Parcel[], seed = 11): THREE.Group {
     if (!buckets.has(key)) buckets.set(key, [])
     buckets.get(key)!.push(inst)
 
-    roofs.push({ u: mu, v: mv, w: w * 1.03, d: dep * 1.03, h: 0.7, y: h, color: spec.roof })
+    const roofTint = rand() < 0.25 ? 0x9aa3a6 : spec.roof
+    roofs.push({ u: mu, v: mv, w: w * 1.03, d: dep * 1.03, h: 0.7, y: h, color: roofTint })
   }
 
   const box = new THREE.BoxGeometry(1, 1, 1)
