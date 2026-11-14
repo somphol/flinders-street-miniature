@@ -85,8 +85,8 @@ export function createMini(canvas: HTMLCanvasElement): Mini {
   controls.maxPolarAngle = Math.PI * 0.48
 
   const overview = () => {
-    const target = localToWorld(0, 6, 0)
-    camera.position.copy(localToWorld(-430, -660, 730))
+    const target = localToWorld(40, 20, 0)
+    camera.position.copy(localToWorld(-470, -800, 880))
     controls.target.copy(target)
     controls.update()
   }

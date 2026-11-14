@@ -24,6 +24,8 @@ export const RESERVED: Rect[] = [
   { u0: -46, u1: 8, v0: 126, v1: 174 },     // Eureka
   { u0: 60, u1: 132, v0: 120, v1: 182 },    // Arts Centre
   { u0: -16, u1: 16, v0: 44, v1: 110 },     // Princes Bridge deck
+  { u0: 70, u1: 240, v0: -352, v1: -182 },  // Royal Exhibition Building + Carlton Gardens
+  { u0: 236, u1: 450, v0: 92, v1: 262 },    // MCG and Yarra Park
 ]
 
 export function inReserved(u: number, v: number, pad = 0): boolean {

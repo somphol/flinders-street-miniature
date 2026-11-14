@@ -101,6 +101,18 @@ export function buildEnvironment(): { group: THREE.Group; water: THREE.Mesh; gro
     }
   }
 
+  // parks: Carlton Gardens and Yarra Park
+  for (const [w, d, u, v] of [[170, 170, 155, -267], [214, 170, 343, 177]] as const) {
+    const park = new THREE.Mesh(
+      new THREE.PlaneGeometry(w, d),
+      new THREE.MeshLambertMaterial({ color: 0x9dbf86 })
+    )
+    park.rotation.x = -Math.PI / 2
+    park.position.set(u, 0.12, v)
+    park.receiveShadow = true
+    group.add(park)
+  }
+
   // street trees along Flinders and the promenade
   const trunks: Instance[] = []
   const crowns: Instance[] = []

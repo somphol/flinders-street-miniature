@@ -39,10 +39,17 @@ test('the grid has both street directions', () => {
   assert.ok(r.some((x) => x.name === 'Swanston' && !x.ew))
 })
 
-test('eight landmarks, each in a district', () => {
-  assert.equal(LANDMARKS.length, 8)
+test('ten landmarks, each with a unique id', () => {
+  assert.equal(LANDMARKS.length, 10)
   const ids = new Set(LANDMARKS.map((l) => l.id))
-  assert.equal(ids.size, 8)
+  assert.equal(ids.size, 10)
+})
+
+test('the two outer landmarks sit outside the CBD grid', () => {
+  const mcg = LANDMARKS.find((l) => l.id === 'mcg')!
+  const exh = LANDMARKS.find((l) => l.id === 'exhibition')!
+  assert.ok(mcg.u > 220, 'MCG should sit beyond Spring Street')
+  assert.ok(exh.v < -200, 'Exhibition should sit north of Victoria Street')
 })
 
 test('districts do not overlap the river centreline', () => {

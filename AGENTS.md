@@ -26,7 +26,8 @@ publishes `dist/` to GitHub Pages.
 
 Construction order in `src/scene/`:
 
-1. `constants.ts` — tray size, grid angle, palette, street lines, districts, landmark table.
+1. `constants.ts` — tray size (900 × 720), grid angle, palette, street lines, districts,
+   ten-landmark table.
 2. `geography.ts` — river edges, reserved lots, district lookup.
 3. `plan.ts` — roads, blocks, parcels, bridges.
 4. `kit.ts` — instancing helper, canvas facade textures, seeded RNG.
@@ -61,8 +62,8 @@ Construction order in `src/scene/`:
 - The station is modelled to silhouette. The wing's window texture reads better than before but
   the entry, clocks and cornice are still implied.
 - Night is emissive windows only — no street lamps, no water reflections.
-- The tray is 720 × 540 so the MCG and Royal Exhibition Building fall outside it; adding them
-  needs a tray and street-grid extension.
+- The tray is 900 × 720. The MCG and Exhibition Building sit in reserved park lots outside the
+  Hoddle street lines; their parks are flat planes, not modelled gardens.
 - No LODs; fine at this scale, would not scale to a larger city.
 
 ## Continuity

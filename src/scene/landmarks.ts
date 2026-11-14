@@ -203,9 +203,76 @@ function princesBridge(): THREE.Group {
   return g
 }
 
+function exhibition(): THREE.Group {
+  const g = new THREE.Group()
+  const stone = 0xdcd4c0
+  g.add(box(118, 26, 46, stone, 150, 0, -268))
+  g.add(box(118.6, 1.4, 46.6, 0xbfb7a4, 150, 26, -268))
+  for (const du of [-44, 44]) {
+    g.add(box(22, 18, 52, 0xcfc7b4, 150 + du, 0, -268))
+    g.add(box(22.5, 1, 52.5, 0xb3ab99, 150 + du, 18, -268))
+  }
+  const drum = new THREE.Mesh(new THREE.CylinderGeometry(15, 15, 9, 24), lambert(0xe2dac6))
+  drum.position.set(150, 30.5, -268)
+  drum.castShadow = true
+  g.add(drum)
+  const dome = lathe([[15, 0], [14.4, 2.4], [12.4, 5.4], [8.6, 8.2], [4.2, 10.4], [1.6, 11.6]], 0xb8c2b8, 24)
+  dome.position.set(150, 35, -268)
+  g.add(dome)
+  const lantern = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, 8, 10), lambert(0xe6dfcc))
+  lantern.position.set(150, 50, -268)
+  g.add(lantern)
+  const cap = new THREE.Mesh(new THREE.ConeGeometry(2.2, 5, 10), lambert(0xb8c2b8))
+  cap.position.set(150, 56.5, -268)
+  g.add(cap)
+  return g
+}
+
+function mcg(): THREE.Group {
+  const g = new THREE.Group()
+  const outer = new THREE.Shape()
+  outer.absellipse(0, 0, 70, 56, 0, Math.PI * 2, false, 0)
+  const hole = new THREE.Path()
+  hole.absellipse(0, 0, 52, 40, 0, Math.PI * 2, true, 0)
+  outer.holes.push(hole)
+  const bowl = new THREE.Mesh(
+    new THREE.ExtrudeGeometry(outer, { depth: 22, bevelEnabled: false, curveSegments: 40 }),
+    lambert(0xe4ded1)
+  )
+  bowl.rotation.x = -Math.PI / 2
+  bowl.position.set(340, 0, 172)
+  bowl.castShadow = true
+  bowl.receiveShadow = true
+  g.add(bowl)
+
+  const field = new THREE.Mesh(new THREE.CircleGeometry(1, 56), lambert(0x6f9e5c))
+  field.scale.set(50, 38, 1)
+  field.rotation.x = -Math.PI / 2
+  field.position.set(340, 0.6, 172)
+  g.add(field)
+
+  const ring = new THREE.Mesh(
+    new THREE.ExtrudeGeometry(outer, { depth: 2, bevelEnabled: false, curveSegments: 40 }),
+    lambert(0xcfc9bb)
+  )
+  ring.rotation.x = -Math.PI / 2
+  ring.position.set(340, 22, 172)
+  g.add(ring)
+
+  for (const [dx, dz] of [[-66, -52], [66, -52], [-66, 52], [66, 52]]) {
+    const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 1.2, 46, 8), lambert(0xd6d0c3))
+    mast.position.set(340 + dx, 23, 172 + dz)
+    g.add(mast)
+    const head = new THREE.Mesh(new THREE.BoxGeometry(10, 2, 3), lambert(0xbfb9ac))
+    head.position.set(340 + dx, 46, 172 + dz)
+    g.add(head)
+  }
+  return g
+}
+
 export function buildLandmarks(): THREE.Group {
   const g = new THREE.Group()
   g.name = 'landmarks'
-  g.add(station(), stPauls(), fedSquare(), eureka(), artsCentre(), youngJackson(), forum(), princesBridge())
+  g.add(station(), stPauls(), fedSquare(), eureka(), artsCentre(), youngJackson(), forum(), princesBridge(), exhibition(), mcg())
   return g
 }
