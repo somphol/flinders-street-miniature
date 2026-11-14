@@ -39,6 +39,10 @@ function station(): THREE.Group {
   wing.receiveShadow = true
   g.add(wing)
   g.add(box(200, 2.4, 32.4, ochre, -100, 13, 20))
+  // dark roof deck over the wing, so it does not read as a white ramp
+  g.add(box(198, 0.6, 30, 0x6f6a60, -100, 20, 20))
+  g.add(box(60, 1.2, 14, 0x7b756a, -60, 20.6, 26))
+
   // parapet ring, not a slab over the roof
   g.add(box(201, 1.4, 1.6, brick, -100, 21.2, 4))
   g.add(box(201, 1.4, 1.6, brick, -100, 21.2, 36))
