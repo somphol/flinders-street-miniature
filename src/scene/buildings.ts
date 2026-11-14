@@ -11,6 +11,9 @@ interface FamilySpec {
   hMul: number
 }
 
+const AWNING_COLOURS = [0x7a4a3c, 0x3f5f57, 0xc0603f, 0x2f4858, 0xb08a4a]
+const kAwn = (r: number) => AWNING_COLOURS[Math.floor(r * AWNING_COLOURS.length)]
+
 const FAMILIES: Record<string, FamilySpec> = {
   terrace: { kind: 'terrace', color: 0xefe3cd, roof: 0xb4644a, hMul: 1 },
   institution: { kind: 'terrace', color: 0xe6dcc6, roof: 0x9aa3a6, hMul: 1.3 },
@@ -28,6 +31,11 @@ export function buildCity(parcelList: Parcel[], seed = 11): THREE.Group {
 
   const buckets = new Map<string, Instance[]>()
   const roofs: Instance[] = []
+  const hips: Instance[] = []
+  const plant: Instance[] = []
+  const balconies: Instance[] = []
+  const awnings: Instance[] = []
+
 
   for (const p of parcelList) {
     const mu = (p.u0 + p.u1) / 2
@@ -49,12 +57,21 @@ export function buildCity(parcelList: Parcel[], seed = 11): THREE.Group {
     if (!buckets.has(key)) buckets.set(key, [])
     buckets.get(key)!.push(inst)
 
+    if (familyName === 'office' || familyName === 'glass' || familyName === 'slab') {
+      const rows = Math.min(4, Math.max(2, Math.round(h / 16)))
+      for (let k = 1; k <= rows; k++) {
+        balconies.push({ u: mu, v: mv + dep * 0.5 + 0.55, w: w * 0.82, d: 1.1,
+                         h: 0.35, y: (h * k) / (rows + 1), color: 0xd8d2c2 })
+      }
+    }
+    if (familyName === 'shophouse' || familyName === 'terrace') {
+      awnings.push({ u: mu, v: mv + dep * 0.5 + 1.1, w: w * 0.86, d: 2.2, h: 0.3,
+                    y: 4.2, color: kAwn(rand()) })
+    }
     const roofTint = rand() < 0.25 ? 0x9aa3a6 : spec.roof
     roofs.push({ u: mu, v: mv, w: w * 1.03, d: dep * 1.03, h: 0.7, y: h, color: roofTint })
   }
 
-  const hips: Instance[] = []
-  const plant: Instance[] = []
   for (const r of roofs) {
     const pitched = r.color === 0xb4644a || r.color === 0xc07a52
     if (pitched && rand() < 0.45) {
@@ -77,6 +94,8 @@ export function buildCity(parcelList: Parcel[], seed = 11): THREE.Group {
 
   const roofMat = new THREE.MeshLambertMaterial({ color: 0xffffff })
   group.add(instanced(box, roofMat, roofs, 'roofs'))
+  group.add(instanced(box, new THREE.MeshLambertMaterial({ color: 0xffffff }), balconies, 'balconies'))
+  group.add(instanced(box, new THREE.MeshLambertMaterial({ color: 0xffffff }), awnings, 'awnings'))
   group.add(instanced(new THREE.ConeGeometry(0.72, 1, 4), roofMat, hips, 'hips'))
   group.add(instanced(box, roofMat, plant, 'plant'))
   return group

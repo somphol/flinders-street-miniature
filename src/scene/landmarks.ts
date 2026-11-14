@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { PALETTE } from './constants'
+import { facadeTexture } from './kit'
 
 const lambert = (c: number) => new THREE.MeshLambertMaterial({ color: c })
 
@@ -26,8 +27,17 @@ function station(): THREE.Group {
   const brick = 0x9c5b45
   const copper = PALETTE.copper
 
-  // main wing, 200 m of frontage
-  g.add(box(200, 20, 32, brick, -100, 0, 20))
+  // main wing, 200 m of frontage, dressed with a window texture
+  const wingTex = facadeTexture('office')
+  const wingTex2 = wingTex.clone()
+  wingTex2.needsUpdate = true
+  wingTex2.repeat.set(14, 2)
+  const wingMat = new THREE.MeshLambertMaterial({ map: wingTex2, color: 0xffffff })
+  const wing = new THREE.Mesh(new THREE.BoxGeometry(200, 20, 32), wingMat)
+  wing.position.set(-100, 10, 20)
+  wing.castShadow = true
+  wing.receiveShadow = true
+  g.add(wing)
   g.add(box(200, 2.4, 32.4, ochre, -100, 13, 20))
   // parapet ring, not a slab over the roof
   g.add(box(201, 1.4, 1.6, brick, -100, 21.2, 4))

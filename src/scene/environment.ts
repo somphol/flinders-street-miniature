@@ -24,14 +24,14 @@ export function buildEnvironment(): { group: THREE.Group; water: THREE.Mesh; gro
   shadowCanvas.width = shadowCanvas.height = 256
   const sg = shadowCanvas.getContext('2d')!
   const grd = sg.createRadialGradient(128, 128, 20, 128, 128, 126)
-  grd.addColorStop(0, 'rgba(90,82,70,0.55)')
-  grd.addColorStop(0.55, 'rgba(90,82,70,0.28)')
+  grd.addColorStop(0, 'rgba(84,74,60,0.72)')
+  grd.addColorStop(0.5, 'rgba(84,74,60,0.42)')
   grd.addColorStop(1, 'rgba(90,82,70,0)')
   sg.fillStyle = grd
   sg.fillRect(0, 0, 256, 256)
   const shadowTex = new THREE.CanvasTexture(shadowCanvas)
   const contact = new THREE.Mesh(
-    new THREE.PlaneGeometry(TRAY.w * 1.5, TRAY.d * 1.6),
+    new THREE.PlaneGeometry(TRAY.w * 1.62, TRAY.d * 1.72),
     new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false, opacity: 0.9 })
   )
   contact.rotation.x = -Math.PI / 2
