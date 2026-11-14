@@ -10,10 +10,18 @@ test('enough parcels to read as a city', () => {
   assert.ok(P.length > 300, `only ${P.length}`)
 })
 
-test('no parcel sits in the river or on a reserved lot', () => {
+test('no parcel overlaps the river or sits on a reserved lot', () => {
   for (const p of P) {
     const u = (p.u0 + p.u1) / 2, v = (p.v0 + p.v1) / 2
-    assert.ok(!isWater(u, v), `parcel in water at ${u},${v}`)
+    // whole parcel must clear the banks, not just its centre
+    const n = Math.max(riverNorthEdge(p.u0), riverNorthEdge(p.u1))
+    const s = Math.min(riverSouthEdge(p.u0), riverSouthEdge(p.u1))
+    assert.ok(p.v1 <= n || p.v0 >= s, `parcel straddles the Yarra at ${u},${v}`)
+    for (const qu of [p.u0, p.u1]) {
+      for (const qv of [p.v0, p.v1, v]) {
+        assert.ok(!isWater(qu, qv), `parcel corner in water at ${qu},${qv}`)
+      }
+    }
     assert.ok(!inReserved(u, v), `parcel on reserved lot at ${u},${v}`)
   }
 })

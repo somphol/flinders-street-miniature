@@ -61,6 +61,9 @@ export function createMini(canvas: HTMLCanvasElement): Mini {
   cityGroup.add(buildCity(parcels(11)))
   cityGroup.add(buildLandmarks())
   const traffic = buildTraffic()
+  if (typeof process === 'undefined' && (globalThis as { __DEV__?: boolean }).__DEV__ !== false) {
+    (window as unknown as { __dbg: unknown }).__dbg = { scene, cityGroup, env }
+  }
   cityGroup.add(traffic.group)
 
   const hemi = new THREE.HemisphereLight(0xfff4e2, 0xcfc3ad, 1.5)

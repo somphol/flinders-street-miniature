@@ -1,5 +1,5 @@
 import { EW_STREETS, NS_STREETS, TRAY } from './constants'
-import { isWater, inReserved, type Rect } from './geography'
+import { isWater, riverNorthEdge, riverSouthEdge, inReserved, type Rect } from './geography'
 import { rng } from './kit'
 
 export interface Road { u0: number; u1: number; v0: number; v1: number; name: string; ew: boolean }
@@ -56,7 +56,12 @@ export function parcels(seed = 7): Parcel[] {
         const v0 = b.v0 + j * cd + gap
         const v1 = b.v0 + (j + 1) * cd - gap
         const mu = (u0 + u1) / 2, mv = (v0 + v1) / 2
-        if (isWater(mu, mv) || inReserved(mu, mv, 2)) continue
+        // a parcel must sit wholly on one bank: testing only the centre let
+        // buildings straddle the water and stand in the Yarra
+        const bankN = Math.max(riverNorthEdge(u0), riverNorthEdge(u1))
+        const bankS = Math.min(riverSouthEdge(u0), riverSouthEdge(u1))
+        const dry = v1 <= bankN - 1.5 || v0 >= bankS + 1.5
+        if (!dry || inReserved(mu, mv, 2)) continue
         if (rand() < 0.03) continue
         out.push({ u0, u1, v0, v1, districtHint: '' })
       }
