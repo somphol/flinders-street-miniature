@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 import { PALETTE } from './constants'
 import { facadeTexture } from './kit'
 
@@ -244,6 +245,30 @@ function mcg(): THREE.Group {
   bowl.castShadow = true
   bowl.receiveShadow = true
   g.add(bowl)
+
+  // stepped seating: two merged tiers rings, alternating pale blue and grey
+  const tiers: THREE.BufferGeometry[][] = [[], []]
+  for (let i = 0; i < 15; i++) {
+    const o = new THREE.Shape()
+    o.absellipse(0, 0, 52 + i * 1.25, 40 + i * 1.0, 0, Math.PI * 2, false, 0)
+    const h = new THREE.Path()
+    h.absellipse(0, 0, 52 + (i + 1) * 1.25, 40 + (i + 1) * 1.0, 0, Math.PI * 2, true, 0)
+    o.holes.push(h)
+    const g = new THREE.ExtrudeGeometry(o, { depth: 1.1, bevelEnabled: false, curveSegments: 30 })
+    g.rotateX(-Math.PI / 2)
+    g.translate(0, 1.4 + i * 1.35, 0)
+    tiers[i % 2].push(g)
+  }
+  const seatColours = [0xdfe4e8, 0x9fa8b0]
+  tiers.forEach((list, k) => {
+    const merged = mergeGeometries(list)
+    if (!merged) return
+    const seats = new THREE.Mesh(merged, lambert(seatColours[k]))
+    seats.position.set(340, 0, 172)
+    seats.castShadow = true
+    seats.receiveShadow = true
+    g.add(seats)
+  })
 
   const field = new THREE.Mesh(new THREE.CircleGeometry(1, 56), lambert(0x6f9e5c))
   field.scale.set(50, 38, 1)

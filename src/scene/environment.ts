@@ -5,7 +5,7 @@ import { riverNorthEdge, riverSouthEdge } from './geography'
 import { instanced, rng, type Instance } from './kit'
 import { roads } from './plan'
 
-export function buildEnvironment(): { group: THREE.Group; water: THREE.Mesh; ground: THREE.Mesh } {
+export function buildEnvironment(): { group: THREE.Group; water: THREE.Mesh; ground: THREE.Mesh; lampHeads: THREE.InstancedMesh } {
   const group = new THREE.Group()
   group.name = 'environment'
   const rand = rng(3)
@@ -137,5 +137,24 @@ export function buildEnvironment(): { group: THREE.Group; water: THREE.Mesh; gro
     group.add(shelter)
   }
 
-  return { group, water, ground }
+  // street lamps: dark posts with warm glowing heads
+  const posts: Instance[] = []
+  const heads: Instance[] = []
+  for (let u = -340; u < 430; u += 46) {
+    for (const v of [-11, 118]) {
+      posts.push({ u, v, w: 0.45, d: 0.45, h: 7.5, color: 0x4a5052 })
+      heads.push({ u, v, w: 1.3, d: 1.3, h: 0.5, y: 7.5, color: 0xffe3b0 })
+    }
+  }
+  const lampPostMesh = instanced(new THREE.CylinderGeometry(0.3, 0.4, 1, 5), new THREE.MeshLambertMaterial({ color: 0xffffff }), posts, 'lampposts')
+  const lampHeadMesh = instanced(
+    new THREE.SphereGeometry(0.75, 8, 6),
+    new THREE.MeshLambertMaterial({ color: 0xfff2d4, emissive: 0xffc46b, emissiveIntensity: 0 }),
+    heads,
+    'lampheads'
+  )
+  group.add(lampPostMesh)
+  group.add(lampHeadMesh)
+
+  return { group, water, ground, lampHeads: lampHeadMesh }
 }

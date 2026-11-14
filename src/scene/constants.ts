@@ -70,8 +70,8 @@ export const LANDMARKS = [
   { id: 'youngjackson', name: 'Young & Jackson', cn: '青年与杰克逊酒馆', short: 'Young & Jackson', u: -6, v: -18, look: 10, view: [45, 35] },
   { id: 'forum', name: 'Forum Theatre', cn: '论坛剧院', short: 'Forum', u: 118, v: -60, look: 25, view: [70, 50] },
   { id: 'bridge', name: 'Princes Bridge', cn: '王子桥', short: 'Bridge', u: 0, v: 76, look: 8, view: [60, 45] },
-  { id: 'exhibition', name: 'Royal Exhibition Building', cn: '皇家展览馆', short: 'Exhibition', u: 150, v: -268, look: 46, view: [90, 70] },
-  { id: 'mcg', name: 'Melbourne Cricket Ground', cn: '墨尔本板球场', short: 'MCG', u: 340, v: 172, look: 34, view: [110, 85] },
+  { id: 'exhibition', name: 'Royal Exhibition Building', cn: '皇家展览馆', short: 'Exhibition', u: 150, v: -268, look: 46, view: [90, 70], dist: 3.4 },
+  { id: 'mcg', name: 'Melbourne Cricket Ground', cn: '墨尔本板球场', short: 'MCG', u: 340, v: 172, look: 34, view: [110, 85], dist: 3.6 },
 ] as const
 
 export type LandmarkId = (typeof LANDMARKS)[number]['id']

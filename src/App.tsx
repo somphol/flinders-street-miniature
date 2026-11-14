@@ -16,12 +16,22 @@ export default function App() {
     const mini = createMini(canvasRef.current)
     miniRef.current = mini
     ;(window as unknown as { __mini: Mini }).__mini = mini
-    const id = setInterval(() => setAz(Math.round(mini.azimuth())), 120)
+    const id = setInterval(() => {
+      setAz(Math.round(mini.azimuth()))
+      // keep the overlay in step with the scene, including external capture calls
+      const s = mini.state()
+      setNight((n) => (Math.abs(n - s.night) > 0.01 ? s.night : n))
+      setActive((a) => (a === s.landmark ? a : s.landmark))
+    }, 150)
     return () => {
       clearInterval(id)
       mini.dispose()
     }
   }, [])
+
+  useEffect(() => {
+    document.body.classList.toggle('night', night > 0.5)
+  }, [night])
 
   const t = COPY[locale]
   const pick = (id: LandmarkId) => {

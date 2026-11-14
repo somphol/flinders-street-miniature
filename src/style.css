@@ -103,3 +103,22 @@ html, body, #root { margin: 0; height: 100%; overflow: hidden; }
   .card .arrow { display: none; }
   .foot { left: 18px; right: 14px; bottom: 4px; font-size: 8px; }
 }
+
+
+/* night: the scene goes dark, so the UI must invert to stay readable */
+body.night { color: #f2ece0; }
+body.night .hud h1 { color: #f5efe2; }
+body.night .tagline { color: #cdd6d2; }
+body.night .lede, body.night .foot { color: #a9b3af; }
+body.night .eyebrow { color: #e0b64a; }
+body.night .hud h1 em { color: #e0b64a; }
+body.night .seg, body.night .ghost, body.night .rail, body.night .card {
+  background: rgba(16,22,26,.72); border-color: rgba(242,236,224,.16); color: #f2ece0;
+}
+body.night .seg button { color: #f2ece0; }
+body.night .seg button.on { background: #f2ece0; color: #14181c; }
+body.night .card .num { color: #e0b64a; }
+body.night .card .arrow { color: #8a9490; }
+body.night .vignette {
+  background: radial-gradient(120% 90% at 50% 45%, rgba(0,0,0,0) 50%, rgba(0,0,0,.45) 100%);
+}

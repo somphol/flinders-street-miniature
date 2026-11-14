@@ -99,7 +99,7 @@ export function createMini(canvas: HTMLCanvasElement): Mini {
     const lm = LANDMARKS.find((l) => l.id === id)
     if (!lm) return
     active = id
-    const k = 2.4
+    const k = 'dist' in lm ? (lm as { dist: number }).dist : 2.4
     const target = localToWorld(lm.u, lm.v, lm.look * 0.5)
     const pos = localToWorld(lm.u + lm.view[0] * k, lm.v + lm.view[1] * k, lm.look * 1.3 + 55)
     flight = { from: camera.position.clone(), to: pos, tFrom: controls.target.clone(), tTo: target, t: 0 }
@@ -150,6 +150,8 @@ export function createMini(canvas: HTMLCanvasElement): Mini {
     hemi.color.lerpColors(new THREE.Color(0xcfe0f0), new THREE.Color(0x1b2a3a), night)
     const water = env.water.material as THREE.MeshPhongMaterial
     water.color.lerpColors(new THREE.Color(PALETTE.day.water), new THREE.Color(PALETTE.night.water), night)
+    const lampMat = env.lampHeads.material as THREE.MeshLambertMaterial
+    lampMat.emissiveIntensity = night * 2.2
     cityGroup.traverse((o) => {
       const mesh = o as THREE.Mesh
       const mat = mesh.material as THREE.MeshLambertMaterial | undefined
